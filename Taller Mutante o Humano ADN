@@ -1,0 +1,17 @@
+seq_aa = input ("DNA sequence: ")
+def validate_dnaX (dna_seq):
+  seqm = dna_seq.upper()
+  valid = seqm.count("A") + seqm.count("C") + seqm.count("G") + seqm.count("T")
+  if valid == len (seqm): return "Human DNA"
+  else : return "Mutant DNA";
+
+def frequencyX (seq):
+  dic = {}
+  for s in seq.lower():
+    if s in dic: dic[s] += 1
+    else : dic[s] = 1
+  return dic
+
+DNA_minus = seq_aa.lower();
+print (DNA_minus + " " + "=" + " " + validate_dnaX(seq_aa))
+print (frequencyX(seq_aa))
