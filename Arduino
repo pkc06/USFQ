@@ -1,0 +1,50 @@
+const int trigPin = 8;     // Trig pin of ultrasonic sensor
+const int echoPin = 7;    // Echo pin of ultrasonic sensor
+const int ledPin = 12;      // Pin connected to the LED
+const int buzzerPin = 13;   // Pin connected to the passive buzzer
+
+const float thresholdDistance = 10.0; // Distance threshold in centimeters
+
+void setup() {
+    Serial.begin(9600);        // Start Serial Monitor
+    pinMode(trigPin, OUTPUT);  // Set Trig pin as OUTPUT
+    pinMode(echoPin, INPUT);   // Set Echo pin as INPUT
+    pinMode(ledPin, OUTPUT);   // Set LED pin as OUTPUT
+    pinMode(buzzerPin, OUTPUT); // Set buzzer pin as OUTPUT
+}
+
+void loop() {
+    long duration;
+    float distance;
+
+    // Send a 10-microsecond pulse to Trig pin to trigger the ultrasonic sensor
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+
+    // Read the duration of the pulse on Echo pin
+    duration = pulseIn(echoPin, HIGH);
+
+    // Calculate distance in centimeters
+    distance = (duration * 0.034) / 2;
+
+    // Print the distance to the Serial Monitor
+    Serial.print("Distance: ");
+    Serial.print(distance);
+    Serial.println(" cm");
+
+    // Check if the distance is within the threshold
+    if (distance > 0 && distance <= thresholdDistance) {
+        // Turn on LED and activate the buzzer
+        digitalWrite(ledPin, HIGH); // Turn the LED on
+        tone(buzzerPin, 1000);      // Turn the buzzer on at 1 kHz
+    } else {
+        // Turn off LED and deactivate the buzzer
+        digitalWrite(ledPin, LOW);  // Turn the LED off
+        noTone(buzzerPin);          // Turn the buzzer off
+    }
+
+    delay(100); // Small delay for stability
+}
